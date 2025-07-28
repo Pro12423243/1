@@ -1,0 +1,611 @@
+wait(2)
+
+local player = game.Players.LocalPlayer
+local humanoid = player.Character:WaitForChild("Humanoid")
+local MainGui = Instance.new("ScreenGui")
+MainGui.Name = "Multivers Hub"
+MainGui.Parent = player:WaitForChild("PlayerGui")
+
+local ToggleButton = Instance.new("ImageButton")
+ToggleButton.Image = "rbxassetid://347835104"
+ToggleButton.Parent = MainGui
+ToggleButton.Position = UDim2.new(0.185, 0, 0.070, 0) 
+ToggleButton.Size = UDim2.new(0, 51, 0, 48)
+
+
+
+
+
+local Corner1 = Instance.new("UICorner")
+Corner1.Parent = ToggleButton
+
+local f = Instance.new("Frame")
+f.Name = "MainFrame"
+f.Size = UDim2.new(0, 450, 0, 250)
+f.Position = UDim2.new(0.5, 0, 0.5, -100) 
+f.AnchorPoint = Vector2.new(0.5, 0.5)
+f.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+f.Parent = MainGui
+f.Visible = false
+
+
+
+local GBGF = Instance.new("ImageLabel")
+GBGF.Parent = f
+GBGF.Image = "rbxassetid://347835104"
+GBGF.Size = UDim2.new(0, 450, 0, 250)
+GBGF.Visible = true
+
+local HN = Instance.new("TextLabel")
+HN.Text = "Galactic Hub v1"
+HN.Parent = GBGF
+HN.Size = UDim2.new(0, 200, 0, 40)
+HN.TextColor3 = Color3.fromRGB(255, 255, 255)
+HN.BackgroundColor3 = Color3.new(0, 0, 0)
+HN.Position = UDim2.new(0, 125, 0, -20)
+HN.BorderSizePixel = 0
+
+local SizeConstraint = Instance.new("UISizeConstraint")
+SizeConstraint.Parent = f
+
+local SizeConstraint1 = Instance.new("UISizeConstraint")
+SizeConstraint1.Parent = GBGF
+
+local C1221 = Instance.new("UICorner")
+C1221.Parent = HN
+local Drag1 = Instance.new("UIDragDetector")
+Drag1.Parent = f
+
+--Ui Tabs
+local TabsScrollingFrame = Instance.new("ScrollingFrame")
+TabsScrollingFrame.Parent = f
+TabsScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TabsScrollingFrame.Position = UDim2.new(0.5, -160, 0.5, 0) 
+TabsScrollingFrame.Size = UDim2.new(0, 75, 0, 200)
+TabsScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+TabsScrollingFrame.ScrollBarImageTransparency = 1
+
+
+local LocalPlayerTab = Instance.new("TextButton")
+LocalPlayerTab.Position = UDim2.new(0.5, -37.5, 0, 0) 
+LocalPlayerTab.Size = UDim2.new(0, 60, 0, 25)
+LocalPlayerTab.Text = "Local Player"
+LocalPlayerTab.Parent = TabsScrollingFrame
+LocalPlayerTab.BackgroundColor3 = Color3.new(0, 0, 0)
+LocalPlayerTab.TextColor3 = Color3.new(0.496925, 0.49453, 0.499336)
+
+local CornerTab1 = Instance.new("UICorner")
+CornerTab1.Parent = LocalPlayerTab
+
+local SettingsTab = Instance.new("TextButton")
+SettingsTab.Position = UDim2.new(0.5, -37.5, 0, 30) 
+SettingsTab.TextXAlignment = "Left"
+SettingsTab.BackgroundColor3 = Color3.new(0, 0, 0)
+SettingsTab.Size = UDim2.new(0, 60, 0, 25)
+SettingsTab.Text = 	"Settings"
+SettingsTab.TextColor3 = Color3.new(0.496925, 0.49453, 0.499336)
+SettingsTab.Parent = TabsScrollingFrame
+
+local CornerTab2 = Instance.new("UICorner")
+CornerTab2.Parent = SettingsTab
+
+
+
+--Frames
+local f1 = Instance.new("ScrollingFrame")
+f1.Name = "OptionsFrame"
+f1.Size = UDim2.new(0, 300, 0, 200)
+f1.Position = UDim2.new(0.5, 50, 0.5, 0) 
+f1.AnchorPoint = Vector2.new(0.5, 0.5)
+f1.BackgroundColor3 = Color3.fromRGB(92, 92, 93)
+f1.Parent = f
+f1.Visible = true
+f1.ScrollBarImageTransparency = 1
+f1.ScrollBarThickness = 0
+
+local f2 = Instance.new("ScrollingFrame")
+f2.Name = "SettingsFrame"
+f2.Size = UDim2.new(0, 300, 0, 200)
+f2.Position = UDim2.new(0.5, 50, 0.5, 0) 
+f2.AnchorPoint = Vector2.new(0.5, 0.5)
+f2.BackgroundColor3 = Color3.fromRGB(92, 92, 93)
+f2.Parent = f
+f2.Visible = false
+
+local Corner2 = Instance.new("UICorner")
+Corner2.Parent = f
+
+local CornerBG = Instance.new("UICorner")
+CornerBG.Parent = GBGF
+
+local Corner3 = Instance.new("UICorner")
+Corner3.Parent = f1
+
+local CornerS = Instance.new("UICorner")
+CornerS.Parent = f2
+
+local TBS = Instance.new("TextBox")
+TBS.Size = UDim2.new(0, 100, 0, 40)
+TBS.Position = UDim2.new(0.5, -50, 0, 30)
+TBS.AnchorPoint = Vector2.new(0.5, 0)
+TBS.Text = "1"
+TBS.Parent = f1
+
+
+local BS = Instance.new("TextButton")
+BS.Name = "SizeButton"
+BS.BackgroundTransparency = 0.85
+BS.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+BS.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+BS.Size = UDim2.new(0, 70, 0, 40)
+BS.Position = UDim2.new(0.5, 70, 0, 30)
+BS.AnchorPoint = Vector2.new(0.5, 0)
+BS.Text = "Enter"
+BS.Parent = f1
+
+local Corner4 = Instance.new("UICorner")
+Corner4.Parent = BS
+
+local Corner5 = Instance.new("UICorner")
+Corner5.Parent = TBS
+
+local LabelS = Instance.new("TextLabel")
+LabelS.BackgroundTransparency = 1
+LabelS.TextColor = BrickColor.new("White")
+LabelS.Size = UDim2.new(0, 70, 0, 20)
+LabelS.Position = UDim2.new(0.5, -50, 0, 10)
+LabelS.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelS.Text = "Size Multiplicator"
+LabelS.TextScaled = true
+LabelS.Parent = f1
+
+local LabelB = Instance.new("TextLabel")
+LabelB.BackgroundTransparency = 1
+LabelB.TextColor = BrickColor.new("White")
+LabelB.Size = UDim2.new(0, 70, 0, 20)
+LabelB.Position = UDim2.new(0.5, 0, 0, 10)
+LabelB.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelB.Text = "BackGround"
+LabelB.TextScaled = true
+LabelB.Parent = f2
+
+local GBG = Instance.new("TextButton")
+GBG.Name = "Galaxy Background"
+GBG.BackgroundTransparency = 0.85
+GBG.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+GBG.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+GBG.Size = UDim2.new(0, 40, 0, 40)
+GBG.Position = UDim2.new(0.5, -70, 0, 30)
+GBG.AnchorPoint = Vector2.new(0.5, 0)
+GBG.Text = "Galaxy"
+GBG.Parent = f2
+
+local BBG = Instance.new("TextButton")
+BBG.Name = "Black Background"
+BBG.BackgroundTransparency = 0.85
+BBG.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+BBG.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+BBG.Size = UDim2.new(0, 40, 0, 40)
+BBG.Position = UDim2.new(0.5, -20, 0, 30)
+BBG.AnchorPoint = Vector2.new(0.5, 0)
+BBG.Text = "Black"
+BBG.Parent = f2
+
+local CornerGBG = Instance.new("UICorner")
+CornerGBG.Parent = GBG
+
+local CornerBBG = Instance.new("UICorner")
+CornerBBG.Parent = BBG
+
+local LabelD = Instance.new("TextLabel")
+LabelD.BackgroundTransparency = 1
+LabelD.TextColor = BrickColor.new("White")
+LabelD.Size = UDim2.new(0, 70, 0, 20)
+LabelD.Position = UDim2.new(0.5, 0, 0, 100)
+LabelD.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelD.Text = "Drag"
+LabelD.TextScaled = true
+LabelD.Parent = f2
+
+local DOB = Instance.new("TextButton")
+DOB.Name = "ToggleB Drag"
+DOB.BackgroundTransparency = 0.85
+DOB.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+DOB.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+DOB.Size = UDim2.new(0, 100, 0, 40)
+DOB.Position = UDim2.new(0.5, 0, 0, 150)
+DOB.AnchorPoint = Vector2.new(0.5, 0)
+DOB.Text = "Disabled"
+DOB.Parent = f2
+
+local D132 = Instance.new("UIDragDetector")
+D132.Enabled = false
+D132.Parent = ToggleButton
+
+
+
+local CornerDob = Instance.new("UICorner")
+CornerDob.Parent = DOB
+
+
+--Size script
+
+
+
+BS.MouseButton1Click:Connect(function()
+	local V = TBS
+	local number = tonumber(TBS.Text)
+
+	if number and number == math.floor(number) then
+		print("Int")
+		local Char = player.Character or player.CharacterAdded:Wait()
+		local Size = Char:ScaleTo(number)
+
+	else
+		print("Str")
+	end
+end)
+
+--toggle button script 
+ToggleButton.MouseButton1Click:Connect(function()
+	f.Visible = not f.Visible
+end)
+
+-- walkspeed ui
+local LabelW = Instance.new("TextLabel")
+LabelW.BackgroundTransparency = 1
+LabelW.TextColor = BrickColor.new("White")
+LabelW.Size = UDim2.new(0, 70, 0, 20)
+LabelW.Position = UDim2.new(0.5, -50, 0, 80)
+LabelW.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelW.Text = "Walk Speed : "..humanoid.WalkSpeed
+LabelW.TextScaled = true
+LabelW.Parent = f1
+
+
+
+humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+	LabelW.Text = "WalkSpeed : " .. humanoid.WalkSpeed
+end)
+
+
+
+
+local TBWS = Instance.new("TextBox")
+TBWS.Size = UDim2.new(0, 100, 0, 40)
+TBWS.Position = UDim2.new(0.5, -50, 0, 100)
+TBWS.AnchorPoint = Vector2.new(0.5, 0)
+TBWS.Text = humanoid.WalkSpeed
+TBWS.Parent = f1
+
+
+local WSE = Instance.new("TextButton")
+WSE.Name = "WalkSpeedButton"
+WSE.BackgroundTransparency = 0.85
+WSE.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+WSE.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+WSE.Size = UDim2.new(0, 70, 0, 40)
+WSE.Position = UDim2.new(0.5, 70, 0, 100)
+WSE.AnchorPoint = Vector2.new(0.5, 0)
+WSE.Text = "Enter"
+WSE.Parent = f1
+
+
+--Jump Height Ui
+local JPTB = Instance.new("TextBox")
+JPTB.Size = UDim2.new(0, 100, 0, 40)
+JPTB.Position = UDim2.new(0.5, -50, 0, 170)
+JPTB.AnchorPoint = Vector2.new(0.5, 0)
+JPTB.Text = humanoid.JumpHeight
+JPTB.Parent = f1
+
+
+local JPE = Instance.new("TextButton")
+JPE.Name = "JumpPowerButton"
+JPE.BackgroundTransparency = 0.85
+JPE.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+JPE.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+JPE.Size = UDim2.new(0, 70, 0, 40)
+JPE.Position = UDim2.new(0.5, 70, 0, 170)
+JPE.AnchorPoint = Vector2.new(0.5, 0)
+JPE.Text = "Enter"
+JPE.Parent = f1
+
+local LabelJP = Instance.new("TextLabel")
+LabelJP.BackgroundTransparency = 1
+LabelJP.TextColor = BrickColor.new("White")
+LabelJP.Size = UDim2.new(0, 70, 0, 20)
+LabelJP.Position = UDim2.new(0.5, -50, 0, 150)
+LabelJP.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelJP.Text = "Jump Height : "..humanoid.JumpHeight
+LabelJP.TextScaled = true
+LabelJP.Parent = f1
+
+local Corner5 = Instance.new("UICorner")
+Corner5.Parent = WSE
+
+local Corner6 = Instance.new("UICorner")
+Corner6.Parent = TBWS
+
+local Corne11 = Instance.new("UICorner")
+Corne11.Parent = JPTB
+
+local Corner11 = Instance.new("UICorner")
+Corner11.Parent = JPE
+
+humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+	TBWS.Text = humanoid.WalkSpeed
+end)
+
+humanoid:GetPropertyChangedSignal("JumpHeight"):Connect(function()
+	JPTB.Text = humanoid.JumpHeight
+end)
+
+
+--Jump Power Ui
+
+
+local Toggle_JHTJP = Instance.new("TextButton")
+Toggle_JHTJP.Parent = f1
+Toggle_JHTJP.Position = UDim2.new(0.5, -120, 0, 245)
+Toggle_JHTJP.AnchorPoint = Vector2.new(0.5, 0)
+Toggle_JHTJP.Size = UDim2.new(0, 30, 0, 30)
+Toggle_JHTJP.BackgroundTransparency = 0.8
+Toggle_JHTJP.BackgroundColor3 = Color3.new(0, 0, 0)
+
+if humanoid.UseJumpPower == true then
+	Toggle_JHTJP.Text = "✅"
+
+elseif humanoid.UseJumpPower == false then
+	Toggle_JHTJP.Text = "❌"
+else
+	Toggle_JHTJP.Text = "attempt to index nil with 'UseJump.Value'"
+end
+
+Toggle_JHTJP.MouseButton1Click:Connect(function()
+	if humanoid.UseJumpPower == true then
+		humanoid.UseJumpPower = false
+		Toggle_JHTJP.Text = "❌"
+	elseif humanoid.UseJumpPower == false then
+		humanoid.UseJumpPower = true	
+		Toggle_JHTJP.Text = "✅"
+	else 
+		print("Error")
+	end
+end)
+
+
+
+
+
+
+local JPTB1 = Instance.new("TextBox")
+JPTB1.Size = UDim2.new(0, 100, 0, 40)
+JPTB1.Position = UDim2.new(0.5, -50, 0, 240)
+JPTB1.AnchorPoint = Vector2.new(0.5, 0)
+JPTB1.Text = humanoid.JumpPower
+JPTB1.Parent = f1
+
+
+local JPE1 = Instance.new("TextButton")
+JPE1.Name = "JumpPowerButton1"
+JPE1.BackgroundTransparency = 0.85
+JPE1.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+JPE1.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+JPE1.Size = UDim2.new(0, 70, 0, 40)
+JPE1.Position = UDim2.new(0.5, 70, 0, 240)
+JPE1.AnchorPoint = Vector2.new(0.5, 0)
+JPE1.Text = "Enter"
+JPE1.Parent = f1
+
+local LabelJP1 = Instance.new("TextLabel")
+LabelJP1.BackgroundTransparency = 1
+LabelJP1.TextColor = BrickColor.new("White")
+LabelJP1.Size = UDim2.new(0, 70, 0, 20)
+LabelJP1.Position = UDim2.new(0.5, -50, 0, 220)
+LabelJP1.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelJP1.Text = "Jump Power : "..humanoid.JumpPower
+LabelJP1.TextScaled = true
+LabelJP1.Parent = f1
+
+local Corner12 = Instance.new("UICorner")
+Corner12.Parent = JPE1
+
+local Corner13 = Instance.new("UICorner")
+Corner13.Parent = JPTB1
+
+local Corner14 = Instance.new("UICorner")
+Corner14.Parent = Toggle_JHTJP
+
+humanoid:GetPropertyChangedSignal("JumpPower"):Connect(function()
+	JPTB1.Text = humanoid.JumpPower
+end)
+
+--Fly Ui
+
+local Toggle_FLY = Instance.new("TextButton")
+Toggle_FLY.Parent = f1
+Toggle_FLY.Position = UDim2.new(0.5, 70, 0, 310)
+Toggle_FLY.AnchorPoint = Vector2.new(0.5, 0)
+Toggle_FLY.Text = "Toggle Infinite Jump"
+Toggle_FLY.Size = UDim2.new(0, 70, 0, 40)
+
+
+
+local FSTB = Instance.new("TextBox")
+FSTB.Size = UDim2.new(0, 100, 0, 40)
+FSTB.Position = UDim2.new(0.5, -50, 0, 310)
+FSTB.AnchorPoint = Vector2.new(0.5, 0)
+FSTB.Text = "Off"
+FSTB.Parent = f1
+
+local FlyKeyCode = Instance.new("TextBox")
+FlyKeyCode.Parent = f1
+FlyKeyCode.Position = UDim2.new(0.5, -120, 0, 315)
+FlyKeyCode.AnchorPoint = Vector2.new(0.5, 0)
+FlyKeyCode.Size = UDim2.new(0, 30, 0, 30)
+FlyKeyCode.BackgroundTransparency = 0.8
+FlyKeyCode.BackgroundColor3 = Color3.new(0, 0, 0)
+FlyKeyCode.Text = "KeyCode"
+
+FlyKeyCode.Visible = false
+
+local IJIS = false
+
+local Corner14 = Instance.new("UICorner")
+Corner14.Parent = Toggle_FLY
+
+local Corner15 = Instance.new("UICorner")
+Corner15.Parent = FSTB
+
+local Corner16 = Instance.new("UICorner")
+Corner16.Parent = FlyKeyCode
+
+
+--WalkSpeed script
+WSE.MouseButton1Click:Connect(function()
+	local v1 = TBWS
+	local number = tonumber(TBWS.Text)
+
+	if number and number == math.floor(number) then
+		print("Int")
+		local Char = player.Character or player.CharacterAdded:Wait()
+		Char.Humanoid.WalkSpeed = number
+
+	else
+		print("Str")
+	end
+end)
+
+--JumpHeight Script
+JPE.MouseButton1Click:Connect(function()
+	local v2 = JPTB
+	local number = tonumber(JPTB.Text)
+
+	if number and number == math.floor(number) then
+		print("Int")
+		local Char = player.Character or player.CharacterAdded:Wait()
+		Char.Humanoid.JumpHeight = number
+
+	else
+		print("Str")
+	end
+end)
+
+--JumpPower Script
+JPE1.MouseButton1Click:Connect(function()
+	local v3 = JPTB1
+	local number = tonumber(JPTB1.Text)
+
+	if number and number == math.floor(number) then
+		print("Int")
+		local Char = player.Character or player.CharacterAdded:Wait()
+		Char.Humanoid.JumpPower = number
+
+	else
+		print("Str")
+	end
+end)
+
+--fly script
+
+--local character = player.Character or player.CharacterAdded:Wait()
+--local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+--
+--local flying = false
+--local bodyVelocity
+--
+--local function toggleFly()
+--	flying = not flying
+--
+--	if flying then
+--		bodyVelocity = Instance.new("BodyVelocity")
+--		bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+--		bodyVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+--		bodyVelocity.Parent = humanoidRootPart
+--	else
+--		if bodyVelocity then
+--			bodyVelocity:Destroy()
+--		end
+--	end
+--end
+
+
+
+
+--PlayerTab
+LocalPlayerTab.MouseButton1Click:Connect(function()
+	f1.Visible = true
+	f2.Visible = false
+end)
+
+SettingsTab.MouseButton1Click:Connect(function()
+	f2.Visible = true
+	f1.Visible = false
+end)
+
+GBG.MouseButton1Click:Connect(function()
+	GBGF.Visible = true
+end)
+
+BBG.MouseButton1Click:Connect(function()
+	GBGF.Visible = false
+end)
+
+DOB.MouseButton1Click:Connect(function()
+	if D132.Enabled == false then
+		D132.Enabled = true
+		DOB.Text = "Enabled"
+	elseif D132.Enabled == true then
+		D132.Enabled = false
+		DOB.Text = "Disabled"
+	end
+	
+	
+end)
+
+--air jump 
+local player = game.Players.LocalPlayer
+local IJIS = false
+
+Toggle_FLY.MouseButton1Click:Connect(function()
+	IJIS = not IJIS -- toggle on/off
+
+	if IJIS then
+		print("Infinite Jump ON")
+		FSTB.Text = "On"
+	else
+		print("Infinite Jump OFF")
+		FSTB.Text = "Off"
+	end
+
+	while IJIS do
+		task.wait()
+
+		local character = player.Character
+		if character then
+			local humanoid = character:FindFirstChild("Humanoid")
+			if humanoid and humanoid:GetState() == Enum.HumanoidStateType.Freefall then
+				if humanoid.Jump == true then
+					humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+				end
+			end
+		end
+	end
+end)
+
+
+
+
