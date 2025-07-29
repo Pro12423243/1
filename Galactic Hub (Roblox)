@@ -3,7 +3,7 @@ wait(2)
 local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
 local MainGui = Instance.new("ScreenGui")
-MainGui.Name = "Multivers Hub v1.1"
+MainGui.Name = "Multivers Hub v1.11"
 MainGui.Parent = player:WaitForChild("PlayerGui")
 
 local ToggleButton = Instance.new("ImageButton")
@@ -505,7 +505,7 @@ Corner16.Parent = FlyKeyCode
 
 --Visual Owl Ui
 local OW = Instance.new("TextBox")
-OW.Size = UDim2.new(0, 50, 0, 40)
+OW.Size = UDim2.new(0, 35, 0, 40)
 OW.Position = UDim2.new(0.5, -100, 0, 30)
 OW.AnchorPoint = Vector2.new(0.5, 0)
 OW.Text = "3"
@@ -515,14 +515,42 @@ local Corner18 = Instance.new("UICorner")
 Corner18.Parent = OW
 
 local OA = Instance.new("TextBox")
-OA.Size = UDim2.new(0, 50, 0, 40)
-OA.Position = UDim2.new(0.5, -30, 0, 30)
+OA.Size = UDim2.new(0, 35, 0, 40)
+OA.Position = UDim2.new(0.5, -55, 0, 30)
 OA.AnchorPoint = Vector2.new(0.5, 0)
 OA.Text = "10"
 OA.Parent = f3
 
+
+local OPS = Instance.new("TextBox")
+OPS.Size = UDim2.new(0, 50, 0, 40)
+OPS.Position = UDim2.new(0.5, -5, 0, 30)
+OPS.AnchorPoint = Vector2.new(0.5, 0)
+OPS.Text = player.Name
+OPS.Parent = f3
+
+local SPSB = Instance.new("TextButton")
+SPSB.Size = UDim2.new(0, 50, 0, 20)
+SPSB.Position = UDim2.new(0.5, -5, 0, 8)
+SPSB.AnchorPoint = Vector2.new(0.5, 0)
+SPSB.Text = "Self"
+SPSB.Parent = f3
+
+local SpUc = Instance.new("UICorner")
+SpUc.Parent = SPSB
+
+local SpUc1 = Instance.new("UICorner")
+SpUc1.Parent = OPS
+
+SPSB.MouseButton1Click:Connect(function()
+	OPS.Text = player.Name
+end)
+
 local Corner19 = Instance.new("UICorner")
 Corner19.Parent = OA
+
+local CornerOPS = Instance.new("UICorner")
+CornerOPS.Parent = OPS
 
 
 local OB = Instance.new("TextButton")
@@ -544,7 +572,7 @@ local LabelOG = Instance.new("TextLabel")
 LabelOG.BackgroundTransparency = 1
 LabelOG.TextColor = BrickColor.new("White")
 LabelOG.Size = UDim2.new(0, 70, 0, 20)
-LabelOG.Position = UDim2.new(0.5, -50, 0, 10)
+LabelOG.Position = UDim2.new(0.5, -80, 0, 5)
 LabelOG.AnchorPoint = Vector2.new(0.5, 0)
 
 
@@ -556,7 +584,7 @@ local LabelOGw = Instance.new("TextLabel")
 LabelOGw.BackgroundTransparency = 1
 LabelOGw.TextColor = BrickColor.new("White")
 LabelOGw.Size = UDim2.new(0, 30, 0, 10)
-LabelOGw.Position = UDim2.new(0.5, -100, 0, 10)
+LabelOGw.Position = UDim2.new(0.5, -100, 0, 20)
 LabelOGw.AnchorPoint = Vector2.new(0.5, 0)
 
 
@@ -569,7 +597,7 @@ local LabelOGA = Instance.new("TextLabel")
 LabelOGA.BackgroundTransparency = 1
 LabelOGA.TextColor = BrickColor.new("White")
 LabelOGA.Size = UDim2.new(0, 30, 0, 10)
-LabelOGA.Position = UDim2.new(0.5, -100, 0, 10)
+LabelOGA.Position = UDim2.new(0.5, -55, 0, 20)
 LabelOGA.AnchorPoint = Vector2.new(0.5, 0)
 
 
@@ -719,35 +747,36 @@ Toggle_FLY.MouseButton1Click:Connect(function()
 end)
 
 
-function CreateGAGOwl(Age : number, Weight : number)
-	Age = tonumber(Age)
-	Weight = tonumber(Weight)
-	
-	print(Age)
-	print(Weight)
-	
-	
+function CreateGAGOwl(plrName : string, AgeInput, WeightInput)
+	local Age = tonumber(AgeInput)
+	local Weight = tonumber(WeightInput)
+
+	local plr = game.Players:FindFirstChild(plrName)
+	if not plr then
+		warn("No Player Found:", plrName)
+		return
+	end
+
+	print("Age:", Age)
+	print("Weight:", Weight)
+
 	local displayAge = Age or "??"
 	local displayWeight = Weight or "??"
-
 
 	local ToolOwl = Instance.new("Tool")
 	ToolOwl.Name = "Blood Owl ["..tostring(displayWeight).." KG] ["..tostring(displayAge).." Age]"
 	ToolOwl.RequiresHandle = true
-	ToolOwl.Parent = player.Backpack
-
+	ToolOwl.Parent = plr.Backpack
 
 	if typeof(Age) == "number" and typeof(Weight) == "number" then
-		local SizeMult = (Weight / 3) * Age / 20
-		print("Owl Size mult :", SizeMult)
-		
+		local SizeMult = (Weight / 3) * (Age / 20)
+
 		if SizeMult < 1 then
 			SizeMult = SizeMult * 1.634
 		end
 
+		print("Owl Size mult:", SizeMult)
 
-		print("Owl Size mult :", SizeMult)
-	
 		local Part1 = Instance.new("Part")
 		Part1.Name = "Handle"
 		Part1.Size = Vector3.new(1, 1, 1)
@@ -755,7 +784,6 @@ function CreateGAGOwl(Age : number, Weight : number)
 		Part1.Massless = true
 		Part1.Anchored = false
 		Part1.Parent = ToolOwl
-
 
 		local BOwlMesh = Instance.new("SpecialMesh")
 		BOwlMesh.MeshId = "rbxassetid://116095091020247"
@@ -773,9 +801,14 @@ end
 
 
 
+
 OB.MouseButton1Click:Connect(function()
-	print("Creating")
-	local Weight = OW.Text
+	print("Creating Owl...")
+
+	local playerName = OPS.Text
 	local Age = OA.Text
-	CreateGAGOwl(Age, Weight)
+	local Weight = OW.Text
+
+	CreateGAGOwl(playerName, Age, Weight)
 end)
+
