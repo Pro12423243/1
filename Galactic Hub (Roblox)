@@ -3,7 +3,7 @@ wait(2)
 local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
 local MainGui = Instance.new("ScreenGui")
-MainGui.Name = "Multivers Hub"
+MainGui.Name = "Multivers Hub v1.1"
 MainGui.Parent = player:WaitForChild("PlayerGui")
 
 local ToggleButton = Instance.new("ImageButton")
@@ -77,8 +77,21 @@ LocalPlayerTab.TextColor3 = Color3.new(0.496925, 0.49453, 0.499336)
 local CornerTab1 = Instance.new("UICorner")
 CornerTab1.Parent = LocalPlayerTab
 
+
+local VisualsTab = Instance.new("TextButton")
+VisualsTab.Position = UDim2.new(0.5, -37.5, 0, 30) 
+VisualsTab.TextXAlignment = "Left"
+VisualsTab.BackgroundColor3 = Color3.new(0, 0, 0)
+VisualsTab.Size = UDim2.new(0, 60, 0, 25)
+VisualsTab.Text = 	"Visuals"
+VisualsTab.TextColor3 = Color3.new(0.496925, 0.49453, 0.499336)
+VisualsTab.Parent = TabsScrollingFrame
+
+local CornerTab2 = Instance.new("UICorner")
+CornerTab2.Parent = VisualsTab
+
 local SettingsTab = Instance.new("TextButton")
-SettingsTab.Position = UDim2.new(0.5, -37.5, 0, 30) 
+SettingsTab.Position = UDim2.new(0.5, -37.5, 0, 60) 
 SettingsTab.TextXAlignment = "Left"
 SettingsTab.BackgroundColor3 = Color3.new(0, 0, 0)
 SettingsTab.Size = UDim2.new(0, 60, 0, 25)
@@ -86,8 +99,8 @@ SettingsTab.Text = 	"Settings"
 SettingsTab.TextColor3 = Color3.new(0.496925, 0.49453, 0.499336)
 SettingsTab.Parent = TabsScrollingFrame
 
-local CornerTab2 = Instance.new("UICorner")
-CornerTab2.Parent = SettingsTab
+local CornerTab3 = Instance.new("UICorner")
+CornerTab3.Parent = SettingsTab
 
 
 
@@ -111,6 +124,19 @@ f2.AnchorPoint = Vector2.new(0.5, 0.5)
 f2.BackgroundColor3 = Color3.fromRGB(92, 92, 93)
 f2.Parent = f
 f2.Visible = false
+f2.ScrollBarImageTransparency = 1
+f2.ScrollBarThickness = 0
+
+local f3 = Instance.new("ScrollingFrame")
+f3.Name = "VisualFrame"
+f3.Size = UDim2.new(0, 300, 0, 200)
+f3.Position = UDim2.new(0.5, 50, 0.5, 0) 
+f3.AnchorPoint = Vector2.new(0.5, 0.5)
+f3.BackgroundColor3 = Color3.fromRGB(92, 92, 93)
+f3.Parent = f
+f3.Visible = false
+f3.ScrollBarImageTransparency = 1
+f3.ScrollBarThickness = 0
 
 local Corner2 = Instance.new("UICorner")
 Corner2.Parent = f
@@ -123,6 +149,9 @@ Corner3.Parent = f1
 
 local CornerS = Instance.new("UICorner")
 CornerS.Parent = f2
+
+local CornerVi = Instance.new("UICorner")
+CornerVi.Parent = f3
 
 local TBS = Instance.new("TextBox")
 TBS.Size = UDim2.new(0, 100, 0, 40)
@@ -441,6 +470,7 @@ Toggle_FLY.Position = UDim2.new(0.5, 70, 0, 310)
 Toggle_FLY.AnchorPoint = Vector2.new(0.5, 0)
 Toggle_FLY.Text = "Toggle Infinite Jump"
 Toggle_FLY.Size = UDim2.new(0, 70, 0, 40)
+Toggle_FLY.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
 
 
 
@@ -472,6 +502,80 @@ Corner15.Parent = FSTB
 
 local Corner16 = Instance.new("UICorner")
 Corner16.Parent = FlyKeyCode
+
+--Visual Owl Ui
+local OW = Instance.new("TextBox")
+OW.Size = UDim2.new(0, 50, 0, 40)
+OW.Position = UDim2.new(0.5, -100, 0, 30)
+OW.AnchorPoint = Vector2.new(0.5, 0)
+OW.Text = "3"
+OW.Parent = f3
+
+local Corner18 = Instance.new("UICorner")
+Corner18.Parent = OW
+
+local OA = Instance.new("TextBox")
+OA.Size = UDim2.new(0, 50, 0, 40)
+OA.Position = UDim2.new(0.5, -30, 0, 30)
+OA.AnchorPoint = Vector2.new(0.5, 0)
+OA.Text = "10"
+OA.Parent = f3
+
+local Corner19 = Instance.new("UICorner")
+Corner19.Parent = OA
+
+
+local OB = Instance.new("TextButton")
+OB.Name = "Owl Button"
+OB.BackgroundTransparency = 0.85
+OB.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+OB.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+OB.Size = UDim2.new(0, 70, 0, 40)
+OB.Position = UDim2.new(0.5, 70, 0, 30)
+OB.AnchorPoint = Vector2.new(0.5, 0)
+OB.Text = "Execute"
+OB.Parent = f3
+
+
+local Corner54 = Instance.new("UICorner")
+Corner54.Parent = OB
+
+local LabelOG = Instance.new("TextLabel")
+LabelOG.BackgroundTransparency = 1
+LabelOG.TextColor = BrickColor.new("White")
+LabelOG.Size = UDim2.new(0, 70, 0, 20)
+LabelOG.Position = UDim2.new(0.5, -50, 0, 10)
+LabelOG.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelOG.Text = "GAG Blood Owl"
+LabelOG.TextScaled = true
+LabelOG.Parent = f3
+
+local LabelOGw = Instance.new("TextLabel")
+LabelOGw.BackgroundTransparency = 1
+LabelOGw.TextColor = BrickColor.new("White")
+LabelOGw.Size = UDim2.new(0, 30, 0, 10)
+LabelOGw.Position = UDim2.new(0.5, -100, 0, 10)
+LabelOGw.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelOGw.Text = "Weight"
+LabelOGw.TextScaled = true
+LabelOGw.Parent = f3
+
+
+local LabelOGA = Instance.new("TextLabel")
+LabelOGA.BackgroundTransparency = 1
+LabelOGA.TextColor = BrickColor.new("White")
+LabelOGA.Size = UDim2.new(0, 30, 0, 10)
+LabelOGA.Position = UDim2.new(0.5, -100, 0, 10)
+LabelOGA.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelOGA.Text = "Age"
+LabelOGA.TextScaled = true
+LabelOGA.Parent = f3
 
 
 --WalkSpeed script
@@ -549,10 +653,18 @@ end)
 LocalPlayerTab.MouseButton1Click:Connect(function()
 	f1.Visible = true
 	f2.Visible = false
+	f3.Visible = false
 end)
 
 SettingsTab.MouseButton1Click:Connect(function()
 	f2.Visible = true
+	f1.Visible = false
+	f3.Visible = false
+end)
+
+VisualsTab.MouseButton1Click:Connect(function()
+	f3.Visible = true
+	f2.Visible = false
 	f1.Visible = false
 end)
 
@@ -607,5 +719,63 @@ Toggle_FLY.MouseButton1Click:Connect(function()
 end)
 
 
+function CreateGAGOwl(Age : number, Weight : number)
+	Age = tonumber(Age)
+	Weight = tonumber(Weight)
+	
+	print(Age)
+	print(Weight)
+	
+	
+	local displayAge = Age or "??"
+	local displayWeight = Weight or "??"
 
 
+	local ToolOwl = Instance.new("Tool")
+	ToolOwl.Name = "Blood Owl ["..tostring(displayWeight).." KG] ["..tostring(displayAge).." Age]"
+	ToolOwl.RequiresHandle = true
+	ToolOwl.Parent = player.Backpack
+
+
+	if typeof(Age) == "number" and typeof(Weight) == "number" then
+		local SizeMult = (Weight / 3) * Age / 20
+		print("Owl Size mult :", SizeMult)
+		
+		if SizeMult < 1 then
+			SizeMult = SizeMult * 1.634
+		end
+
+
+		print("Owl Size mult :", SizeMult)
+	
+		local Part1 = Instance.new("Part")
+		Part1.Name = "Handle"
+		Part1.Size = Vector3.new(1, 1, 1)
+		Part1.CanCollide = false
+		Part1.Massless = true
+		Part1.Anchored = false
+		Part1.Parent = ToolOwl
+
+
+		local BOwlMesh = Instance.new("SpecialMesh")
+		BOwlMesh.MeshId = "rbxassetid://116095091020247"
+		BOwlMesh.TextureId = "rbxassetid://71934190941112"
+		BOwlMesh.MeshType = Enum.MeshType.FileMesh
+		BOwlMesh.Scale = Vector3.new(3, 3, 4) * SizeMult
+		BOwlMesh.VertexColor = Vector3.new(1, 1, 1)
+		BOwlMesh.Parent = Part1
+	else
+		warn("Cannot calculate SizeMult: Age or Weight invalid.")
+	end
+
+	return ToolOwl
+end
+
+
+
+OB.MouseButton1Click:Connect(function()
+	print("Creating")
+	local Weight = OW.Text
+	local Age = OA.Text
+	CreateGAGOwl(Age, Weight)
+end)
