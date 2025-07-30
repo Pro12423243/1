@@ -1,9 +1,19 @@
 wait(2)
+Duration = math.random(3, 10)
+game.StarterGui:SetCore("SendNotification", {
+	Title = "Galactic Hub v1.12",
+	Text = "Loading Hub",
+	Duration = Duration
+})
+local DAppro = Duration + math.random(0, 2)
+print("Loading time ~"..DAppro)
+
+wait(Duration)
 
 local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
 local MainGui = Instance.new("ScreenGui")
-MainGui.Name = "Multivers Hub v1.11"
+MainGui.Name = "Multivers Hub v1.12"
 MainGui.Parent = player:WaitForChild("PlayerGui")
 
 local ToggleButton = Instance.new("ImageButton")
@@ -37,7 +47,7 @@ GBGF.Size = UDim2.new(0, 450, 0, 250)
 GBGF.Visible = true
 
 local HN = Instance.new("TextLabel")
-HN.Text = "Galactic Hub v1"
+HN.Text = "Galactic Hub v1.12"
 HN.Parent = GBGF
 HN.Size = UDim2.new(0, 200, 0, 40)
 HN.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -807,7 +817,11 @@ function CreateGAGOwl(plrName : string, AgeInput, WeightInput)
 	ToolOwl.Parent = plr.Backpack
 
 	if typeof(Age) == "number" and typeof(Weight) == "number" then
-		local SizeMult = (Weight / 3) * (Age / 20)
+		local AgeMult = Age/40
+		if AgeMult < 1 then
+			AgeMult = 1
+		end
+		local SizeMult = (Weight / 3) * AgeMult
 
 		if SizeMult < 1 then
 			SizeMult = SizeMult * 1.634
@@ -847,6 +861,19 @@ function TeleportToPlayer(playertotp, targetplayer)
 end
 
 
+function TweenToggleToPlayer(playertoBring, targetplayer)
+	local tragetcharacter = playertoBring.Character
+	local targetHRP = tragetcharacter:FindFirstChild("HumanoidRootPart")
+	local Pos = targetHRP.CFrame
+	print(Pos)
+	--bring
+	local Target = targetplayer.Character.HumanoidRootPart.CFrame
+	local TS = game:GetService("TweenService")
+	local Bring = TS:Create(player.Character.HumanoidRootPart, TweenInfo.new(1), {CFrame = Target})
+	Bring:Play()
+end
+
+
 OB.MouseButton1Click:Connect(function()
 	print("Creating Owl...")
 
@@ -861,3 +888,4 @@ TPB.MouseButton1Click:Connect(function()
 	print("Teleporting...")
 	TeleportToPlayer(player, PST.Text)
 end)
+
