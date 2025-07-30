@@ -605,6 +605,44 @@ LabelOGA.Text = "Age"
 LabelOGA.TextScaled = true
 LabelOGA.Parent = f3
 
+-- teleport button
+local TPB = Instance.new("TextButton")
+TPB.Name = "TP Button"
+TPB.BackgroundTransparency = 0.85
+TPB.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+TPB.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+TPB.Size = UDim2.new(0, 70, 0, 40)
+TPB.Position = UDim2.new(0.5, 70, 0, 100)
+TPB.AnchorPoint = Vector2.new(0.5, 0)
+TPB.Text = "Execute"
+TPB.Parent = f3
+
+local LabelTP = Instance.new("TextLabel")
+LabelTP.BackgroundTransparency = 1
+LabelTP.TextColor = BrickColor.new("White")
+LabelTP.Size = UDim2.new(0, 55, 0, 20)
+LabelTP.Position = UDim2.new(0.5, -35, 0, 80)
+LabelTP.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelTP.Text = "Teleport"
+LabelTP.TextScaled = true
+LabelTP.Parent = f3
+
+
+local PST = Instance.new("TextBox")
+PST.Size = UDim2.new(0, 50, 0, 40)
+PST.Position = UDim2.new(0.5, -5, 0, 100)
+PST.AnchorPoint = Vector2.new(0.5, 0)
+PST.Text = player.Name
+PST.Parent = f3
+
+local CornerTPE = Instance.new("UICorner")
+CornerTPE.Parent = TPB
+
+local CornerTPST = Instance.new("UICorner")
+CornerTPST.Parent = PST
+
 
 --WalkSpeed script
 WSE.MouseButton1Click:Connect(function()
@@ -799,7 +837,14 @@ function CreateGAGOwl(plrName : string, AgeInput, WeightInput)
 	return ToolOwl
 end
 
-
+function TeleportToPlayer(playertotp, targetplayer)
+	local tragetcharacter = playertotp.Character
+	local targetHRP = tragetcharacter:FindFirstChild("HumanoidRootPart")
+	local Pos = targetHRP.CFrame
+	print(Pos)
+	--tp
+	playertotp.Character.HumanoidRootPart.CFrame = Pos
+end
 
 
 OB.MouseButton1Click:Connect(function()
@@ -812,3 +857,7 @@ OB.MouseButton1Click:Connect(function()
 	CreateGAGOwl(playerName, Age, Weight)
 end)
 
+TPB.MouseButton1Click:Connect(function()
+	print("Teleporting...")
+	TeleportToPlayer(player, PST.Text)
+end)
