@@ -643,6 +643,74 @@ LabelOGA.Text = "Age"
 LabelOGA.TextScaled = true
 LabelOGA.Parent = f3
 
+--ESP script
+
+local highlightEnabled = false
+
+function ToggleHighlights(localPlayer)
+	highlightEnabled = not highlightEnabled
+
+	for _, player in ipairs(game.Players:GetPlayers()) do
+		if player ~= localPlayer and player.Character then
+			local char = player.Character
+			local existing = char:FindFirstChild("Highlight")
+
+			if highlightEnabled then
+				if not existing then
+					local hl = Instance.new("Highlight")
+					hl.Name = "Highlight"
+					hl.FillColor = Color3.fromRGB(255, 255, 0)
+					hl.OutlineColor = Color3.fromRGB(0, 0, 0)
+					hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					hl.Parent = char
+				end
+			else
+				if existing then
+					existing:Destroy()
+				end
+			end
+		end
+	end
+
+	print("Highlights toggled:", highlightEnabled and "ON" or "OFF")
+end
+
+
+-- Player Esp Gui
+
+local LabelESP = Instance.new("TextLabel")
+LabelESP.BackgroundTransparency = 1
+LabelESP.TextColor = BrickColor.new("White")
+LabelESP.Size = UDim2.new(0, 30, 0, 10)
+LabelESP.Position = UDim2.new(0.5, 0, 0, 75)
+LabelESP.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelESP.Text = "ESP"
+LabelESP.TextScaled = true
+LabelESP.Parent = f3
+
+local PESP = Instance.new("TextButton")
+PESP.Name = "ESP players"
+PESP.BackgroundTransparency = 0.85
+PESP.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+PESP.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+PESP.Size = UDim2.new(0, 70, 0, 40)
+PESP.Position = UDim2.new(0.5, 0, 0, 100)
+PESP.AnchorPoint = Vector2.new(0.5, 0)
+PESP.Text = "Off"
+PESP.Parent = f3
+
+PESP.MouseButton1Click:Connect(function()
+	if PESP.Text == "Off" then
+		PESP.Text = "On"
+		ToggleHighlights(player)
+	elseif PESP.Text == "On" then
+		PESP.Text = "Off"
+		ToggleHighlights(player)
+	end
+end)
+
 -- teleport button
 local TPB = Instance.new("TextButton")
 TPB.Name = "TP Button"
@@ -1006,3 +1074,6 @@ UAB.MouseButton1Click:Connect(function()
 		warn("Player '" .. TUAP .. "' not found.")
 	end
 end)
+
+
+
