@@ -646,15 +646,17 @@ LabelOGA.Parent = f3
 --ESP script
 
 local highlightEnabled = false
+local RunService = game:GetService("RunService")
 
-function ToggleHighlights(localPlayer)
+function ToggleHighlightsWithName(localPlayer)
 	highlightEnabled = not highlightEnabled
 
 	for _, player in ipairs(game.Players:GetPlayers()) do
 		if player ~= localPlayer and player.Character then
 			local char = player.Character
-			local existing = char:FindFirstChild("Highlight")
 
+			-- Highlight
+			local existing = char:FindFirstChild("Highlight")
 			if highlightEnabled then
 				if not existing then
 					local hl = Instance.new("Highlight")
@@ -669,11 +671,43 @@ function ToggleHighlights(localPlayer)
 					existing:Destroy()
 				end
 			end
+
+			-- Billboard name
+			local head = char:FindFirstChild("Head")
+			if head then
+				local existingBillboard = head:FindFirstChild("NameTag")
+				if highlightEnabled then
+					if not existingBillboard then
+						local billboard = Instance.new("BillboardGui")
+						billboard.Name = "NameTag"
+						billboard.Adornee = head
+						billboard.AlwaysOnTop = true
+						billboard.Size = UDim2.new(0, 200, 0, 50)
+						billboard.StudsOffset = Vector3.new(0, 2, 0)
+						billboard.Parent = head
+
+						local textLabel = Instance.new("TextLabel")
+						textLabel.Size = UDim2.new(1, 0, 1, 0)
+						textLabel.BackgroundTransparency = 1
+						textLabel.Text = player.Name
+						textLabel.TextColor3 = Color3.new(1, 1, 0)
+						textLabel.TextStrokeTransparency = 0
+						textLabel.Font = Enum.Font.SourceSansBold
+						textLabel.TextScaled = true
+						textLabel.Parent = billboard
+					end
+				else
+					if existingBillboard then
+						existingBillboard:Destroy()
+					end
+				end
+			end
 		end
 	end
 
-	print("Highlights toggled:", highlightEnabled and "ON" or "OFF")
+	print("Player highlights toggled:", highlightEnabled and "ON" or "OFF")
 end
+
 
 
 -- Player Esp Gui
@@ -704,10 +738,10 @@ PESP.Parent = f3
 PESP.MouseButton1Click:Connect(function()
 	if PESP.Text == "Off" then
 		PESP.Text = "On"
-		ToggleHighlights(player)
+		ToggleHighlightsWithName(player)
 	elseif PESP.Text == "On" then
 		PESP.Text = "Off"
-		ToggleHighlights(player)
+		ToggleHighlightsWithName(player)
 	end
 end)
 
@@ -765,13 +799,13 @@ local LabelUA = Instance.new("TextLabel")
 LabelUA.BackgroundTransparency = 1
 LabelUA.TextColor = BrickColor.new("White")
 LabelUA.Size = UDim2.new(0, 55, 0, 20)
-LabelUA.Position = UDim2.new(0.5, -35, 0, 0)
+LabelUA.Position = UDim2.new(0.5, -35, 0, 70)
 LabelUA.AnchorPoint = Vector2.new(0.5, 0)
 
 
-LabelTP.Text = "Bring Unanchored"
-LabelTP.TextScaled = true
-LabelTP.Parent = f4
+LabelUA.Text = "Bring Unanchored"
+LabelUA.TextScaled = true
+LabelUA.Parent = f4
 
 
 local TPUATP = Instance.new("TextBox")
@@ -787,6 +821,48 @@ CornerTPE.Parent = TPB
 local CornerTPST = Instance.new("UICorner")
 CornerTPST.Parent = PST
 
+--Un anchored orbit
+
+
+local UAO = Instance.new("TextButton")
+UAO.Name = "UA0 Button"
+UAO.BackgroundTransparency = 0.85
+UAO.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+UAO.TextColor3 = Color3.new(0.484459, 0.482124, 0.486809)
+UAO.Size = UDim2.new(0, 70, 0, 40)
+UAO.Position = UDim2.new(0.5, 70, 0, 170)
+UAO.AnchorPoint = Vector2.new(0.5, 0)
+UAO.Text = "Execute"
+UAO.Parent = f4
+
+local LabelUAO = Instance.new("TextLabel")
+LabelUAO.BackgroundTransparency = 1
+LabelUAO.TextColor = BrickColor.new("White")
+LabelUAO.Size = UDim2.new(0, 55, 0, 20)
+LabelUAO.Position = UDim2.new(0.5, -35, 0, 140)
+LabelUAO.AnchorPoint = Vector2.new(0.5, 0)
+
+
+LabelUAO.Text = "Orbit UnAnchored"
+LabelUAO.TextScaled = true
+LabelUAO.Parent = f4
+
+
+local OUAS = Instance.new("TextBox")
+OUAS.Size = UDim2.new(0, 50, 0, 40)
+OUAS.Position = UDim2.new(0.5, -5, 0, 170)
+OUAS.AnchorPoint = Vector2.new(0.5, 0)
+OUAS.Text = player.Name
+OUAS.Parent = f4
+OUAS.Text = 10
+
+local OUASpeed = tonumber(OUAS.Text)
+
+local CornerUAO = Instance.new("UICorner")
+CornerUAO.Parent = UAO
+
+local CornerTPST12 = Instance.new("UICorner")
+CornerTPST12.Parent = LabelUAO
 
 --WalkSpeed script
 WSE.MouseButton1Click:Connect(function()
@@ -1075,5 +1151,74 @@ UAB.MouseButton1Click:Connect(function()
 	end
 end)
 
+--uao
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
 
+local orbitEnabled = false
+local orbitConnections = {}
+
+function ToggleOrbitAroundPlayer(player, orbitSpeed)
+	orbitEnabled = not orbitEnabled
+
+	-- Stop orbit
+	if not orbitEnabled then
+		for _, conn in ipairs(orbitConnections) do
+			if typeof(conn) == "RBXScriptConnection" then
+				conn:Disconnect()
+			end
+		end
+		orbitConnections = {}
+		print("Orbit disabled")
+		return
+	end
+
+	print("Orbit enabled")
+
+	local character = player.Character
+	local hrp = character and character:FindFirstChild("HumanoidRootPart")
+	if not hrp then
+		warn("HumanoidRootPart not found!")
+		return
+	end
+
+	local parts = {}
+	for _, obj in ipairs(workspace:GetDescendants()) do
+		if obj:IsA("BasePart") and not obj.Anchored and not obj:IsDescendantOf(character) then
+			table.insert(parts, obj)
+		end
+	end
+
+	for i, part in ipairs(parts) do
+		local angleOffset = math.rad((360 / #parts) * i)
+		local radius = 10 + (i % 4) * 7
+		local height = 4 + (i % 2) * 3
+		local t = 0
+
+		local conn
+		conn = RunService.Heartbeat:Connect(function(dt)
+			if not orbitEnabled or not part or not part.Parent or not player.Character or not hrp then
+				conn:Disconnect()
+				return
+			end
+
+			t += dt * orbitSpeed
+			local x = math.cos(t + angleOffset) * radius
+			local z = math.sin(t + angleOffset) * radius
+			local targetPos = hrp.Position + Vector3.new(x, height, z)
+
+			part.CFrame = part.CFrame:Lerp(CFrame.new(targetPos), 0.2)
+		end)
+
+		table.insert(orbitConnections, conn)
+	end
+end
+
+
+
+local player = game.Players.LocalPlayer
+
+UAO.MouseButton1Click:Connect(function()
+	ToggleOrbitAroundPlayer(player, OUASpeed)
+end)
 
