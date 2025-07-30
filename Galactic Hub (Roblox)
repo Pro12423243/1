@@ -509,6 +509,7 @@ Toggle_FLY.AnchorPoint = Vector2.new(0.5, 0)
 Toggle_FLY.Text = "Toggle Infinite Jump"
 Toggle_FLY.Size = UDim2.new(0, 70, 0, 40)
 Toggle_FLY.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+Toggle_FLY.BackgroundTransparency = 0.85
 
 
 
@@ -540,6 +541,25 @@ Corner15.Parent = FSTB
 
 local Corner16 = Instance.new("UICorner")
 Corner16.Parent = FlyKeyCode
+
+--Noclip Ui
+
+local Toggle_Noclip = Instance.new("TextButton")
+Toggle_Noclip.Parent = f1
+Toggle_Noclip.Position = UDim2.new(0.5, 70, 0, 380)
+Toggle_Noclip.AnchorPoint = Vector2.new(0.5, 0)
+Toggle_Noclip.Text = "Toggle Noclip"
+Toggle_Noclip.Size = UDim2.new(0, 70, 0, 40)
+Toggle_Noclip.BackgroundColor3 = Color3.new(0.182834, 0.183474, 0.185412)
+Toggle_Noclip.BackgroundTransparency = 0.85
+
+Toggle_Noclip.MouseButton1Click:Connect(function()
+	if Toggle_Noclip.Text == "Off" or Toggle_Noclip.Text == "Toggle Noclip" then
+		Toggle_Noclip.Text = "On"
+	else
+		Toggle_Noclip.Text = "Off"
+	end
+end)
 
 --Visual Owl Ui
 local OW = Instance.new("TextBox")
@@ -1222,3 +1242,49 @@ UAO.MouseButton1Click:Connect(function()
 	ToggleOrbitAroundPlayer(player, OUASpeed)
 end)
 
+
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local noclipEnabled = false
+local noclipConnection
+
+function ToggleNoclip()
+	noclipEnabled = not noclipEnabled
+
+	if noclipEnabled then
+		print("Noclip enabled")
+		noclipConnection = RunService.Stepped:Connect(function()
+			local character = player.Character
+			if not character then return end
+
+			for _, part in ipairs(character:GetDescendants()) do
+				if part:IsA("BasePart") then
+					part.CanCollide = false
+				end
+			end
+		end)
+	else
+		print("Noclip disabled")
+		if noclipConnection then
+			noclipConnection:Disconnect()
+			noclipConnection = nil
+		end
+
+		-- Optionally restore collision
+		local character = player.Character
+		if character then
+			for _, part in ipairs(character:GetDescendants()) do
+				if part:IsA("BasePart") then
+					part.CanCollide = true
+				end
+			end
+		end
+	end
+end
+
+
+Toggle_Noclip.MouseButton1Click:Connect(function()
+	ToggleNoclip()
+end)
