@@ -1,14 +1,11 @@
-wait(2)
-Duration = math.random(3, 10)
 game.StarterGui:SetCore("SendNotification", {
 	Title = "Galactic Hub v1.2",
 	Text = "Loading Hub",
-	Duration = Duration
+	Duration = 5
 })
-local DAppro = Duration + math.random(0, 2)
-print("Loading time ~"..DAppro)
 
-wait(Duration)
+wait(2)
+
 
 local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
