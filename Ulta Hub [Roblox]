@@ -1,0 +1,548 @@
+--=== VALUES ===--
+local Values = {
+	Aimbot = false,
+	HeadTarget = false,
+	ESP = false,
+	WalkSpeed = 16,
+	Noclip = false,
+	TweeningNearestPlayer = false,
+	TweeningSpeed = 100,
+	PLRPOSBeam = false,
+	BOXESP = false,
+}
+
+local player = game.Players.LocalPlayer
+local cam = workspace.CurrentCamera
+local TweenService = game:GetService("TweenService")
+local CurrentTween = nil
+
+--=== AIMBOT ===--
+game:GetService("RunService").RenderStepped:Connect(function()
+	
+	if not player.Character then return end
+
+
+	local Shortest = math.huge
+	local Target = nil
+	local root = player.Character:FindFirstChild("HumanoidRootPart")
+	if not root then return end
+
+	for _,plr in ipairs(game.Players:GetPlayers()) do
+		if plr ~= player and plr.Character then
+			if Values.ESP then
+				if not plr.Character:FindFirstChild("HighlightHelper_111") then
+					local highlight = Instance.new("Highlight")
+					highlight.Name = "HighlightHelper_111"
+					highlight.Parent = plr.Character
+					highlight.FillTransparency = 0.5
+					highlight.OutlineTransparency = 0
+					highlight.OutlineColor = Color3.new(1, 0, 0)
+					highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					highlight.Enabled = true
+					highlight.FillColor = Color3.fromRGB(255, 0, 0)
+				end
+				if Values.PLRPOSBeam then
+					if not plr.Character:FindFirstChild("PLRPOSBeam_111") then
+						local attch1 = Instance.new("Attachment")
+						attch1.Name = "PLRPOSBeam_111Attch"
+						attch1.Parent = plr.Character.HumanoidRootPart
+						attch1.Position = Vector3.new(0,-3,0)
+						local attch2 = Instance.new("Attachment")
+						attch2.Name = "PLRPOSBeam_111Attch2"
+						attch2.Parent = root
+						attch2.Position = Vector3.new(0,-3,0)
+						local beam = Instance.new("Beam")
+						beam.Name = "PLRPOSBeam_111"
+						beam.Parent = plr.Character
+						beam.Color = ColorSequence.new(Color3.new(0, 1, 0))
+						beam.Attachment0 = attch1
+						beam.Attachment1 = attch2
+						beam.Width0 = 0.1
+						beam.Width1 = 0.1
+						beam.FaceCamera = false
+						beam.ZOffset = 10000
+					end
+				end
+				if Values.BOXESP then
+					if not plr.Character:FindFirstChild("BOXESP_111") then
+						local box = Instance.new("BillboardGui")
+						box.Name = "BOXESP_111"
+						box.Parent = plr.Character
+						box.Adornee = plr.Character.HumanoidRootPart
+						box.Size = UDim2.new(5, 0, 6, 0)
+						local f111 = Instance.new("Frame")
+						f111.Parent = box
+						f111.Size = UDim2.new(1, 0, 1, 0)
+						f111.BackgroundTransparency = 1
+						local st111 = Instance.new("UIStroke")
+						st111.Parent = f111
+						st111.Color = Color3.new(1, 0, 0)
+						st111.Thickness = 3
+						st111.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+					end
+				end
+			else
+				if plr.Character:FindFirstChild("HighlightHelper_111") then
+					plr.Character:FindFirstChild("HighlightHelper_111"):Destroy()
+				end
+				if plr.Character:FindFirstChild("PLRPOSBeam_111") then
+					plr.Character:FindFirstChild("PLRPOSBeam_111"):Destroy()
+					plr.Character.HumanoidRootPart:FindFirstChild("PLRPOSBeam_111Attch"):Destroy()
+					root:FindFirstChild("PLRPOSBeam_111Attch"):Destroy()
+				end
+				if plr.Character:FindFirstChild("BOXESP_111") then
+					plr.Character:FindFirstChild("BOXESP_111"):Destroy()
+				end
+			end
+			
+			local troot = plr.Character:FindFirstChild("HumanoidRootPart")
+			if troot then
+				local dist = (troot.Position - root.Position).Magnitude
+				if dist < Shortest then
+					Shortest = dist
+					Target = plr.Character
+				end
+			end
+		end
+	end
+	if Values.TweeningNearestPlayer and Target then
+
+		local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+		local thrp = Target:FindFirstChild("HumanoidRootPart")
+		if hrp and thrp then
+			local dist = Shortest
+			local s = Values.TweeningSpeed
+			local t = dist/s
+			if CurrentTween then
+				CurrentTween:Cancel()
+				CurrentTween = nil
+			end
+			local tweenInfo = TweenInfo.new(
+				t,                  
+				Enum.EasingStyle.Linear,
+				Enum.EasingDirection.Out
+			)
+
+			CurrentTween = TweenService:Create(
+				hrp,
+				tweenInfo,
+				{CFrame = thrp.CFrame}
+			)
+
+			CurrentTween:Play()
+		end
+	end
+
+	if Values.Aimbot then 
+		if Target then
+			local part = Values.HeadTarget and Target:FindFirstChild("Head") or Target:FindFirstChild("HumanoidRootPart")
+			if part then
+				cam.CFrame = CFrame.lookAt(cam.CFrame.Position, part.Position)
+			end
+		end
+	end
+	if Values.Noclip then
+		for i, v in pairs(player.Character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.CanCollide = false
+			end
+		end
+	else
+		for i, v in pairs(player.Character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.CanCollide = true
+			end
+		end
+	end
+end)
+
+
+
+
+--================================================--
+--================ UI UTILITIES ==================--
+--================================================--
+
+local Gui = Instance.new("ScreenGui", player.PlayerGui)
+Gui.ResetOnSpawn = false
+
+
+-- Create simple frame
+local function CreateFrame(parent, size, pos, color, transparency)
+	local f = Instance.new("Frame", parent)
+	f.Size = size
+	f.Position = pos or UDim2.new()
+	f.BackgroundColor3 = color or Color3.fromRGB(0,0,0)
+	f.BackgroundTransparency = transparency or 0.5
+	return f
+end
+
+local function CreateScrolling(parent, size, pos, color, transparency)
+	local f = Instance.new("ScrollingFrame", parent)
+	f.Size = size
+	f.Position = pos or UDim2.new()
+	f.BackgroundColor3 = color or Color3.fromRGB(0,0,0)
+	f.BackgroundTransparency = transparency or 0.5
+	f.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	f.CanvasSize = UDim2.new(0,0,0,0)
+	f.ScrollBarThickness = 10
+	return f
+end
+
+-- Create a tab button
+local function CreateButton(parent, text, callback)
+	local b = Instance.new("TextButton", parent)
+	b.Size = UDim2.new(1,0,0,28)
+	b.BackgroundTransparency = 1
+	b.TextColor3 = Color3.new(1,1,1)
+	b.Text = text
+	b.MouseButton1Click:Connect(callback)
+	local stroke = Instance.new("UIStroke", b)
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	stroke.Color = Color3.new(1,1,1)
+	stroke.Thickness = 2
+
+	local corner = Instance.new("UICorner", b)
+	corner.CornerRadius = UDim.new(0,8)
+	return b
+end
+
+
+--============== MAIN UI ==============--
+
+local HubBG = CreateFrame(Gui, UDim2.new(0.5,0,0.5,0), UDim2.new(0.25,0,0.25,0))
+HubBG.Visible = true
+
+local HubStrock = Instance.new("UIStroke", HubBG)
+HubStrock.Color = Color3.new(0, 0, 0)
+HubStrock.Thickness = 5
+
+local HubCorner = Instance.new("UICorner", HubBG)
+HubCorner.CornerRadius = UDim.new(0,8)
+HubBG.ZIndex = 1000
+
+-- Toggle with L
+game:GetService("UserInputService").InputBegan:Connect(function(input,gp)
+	if gp then return end
+	if input.KeyCode == Enum.KeyCode.L then
+		HubBG.Visible = not HubBG.Visible
+	end
+end)
+
+
+-- Sidebar
+local SideBar = CreateFrame(HubBG, UDim2.new(0.25,0,1,0))
+local list = Instance.new("UIListLayout", SideBar)
+list.SortOrder = Enum.SortOrder.LayoutOrder
+list.Padding = UDim.new(0,0)
+list.VerticalAlignment = Enum.VerticalAlignment.Top
+list.HorizontalAlignment = Enum.HorizontalAlignment.Left
+local Tabs = {}
+
+-- Content area
+local Content = CreateFrame(HubBG, UDim2.new(0.75,0,1,0), UDim2.new(0.25,0,0,0))
+
+
+
+--================= TAB SYSTEM =================--
+
+local function CreateTab(name)
+	local tab = CreateScrolling(Content, UDim2.new(1,0,1,0))
+	tab.Visible = false
+
+	local list = Instance.new("UIListLayout", tab)
+	list.SortOrder = Enum.SortOrder.LayoutOrder
+	list.Padding = UDim.new(0,4)
+
+	CreateButton(SideBar,name,function()
+		for _,t in pairs(Tabs) do
+			t.Visible = false
+		end
+		tab.Visible = true
+	end)
+
+	Tabs[name] = tab
+	return tab
+end
+
+
+--========= TOGGLE INSIDE TAB =========--
+
+local function CreateToggleInTab(tab,label,valueKey)
+	local frame = CreateFrame(tab,UDim2.new(1,0,0,30),nil,Color3.new(0,0,0),0.3)
+
+	local text = Instance.new("TextLabel", frame)
+	text.Size = UDim2.new(0.8,0,1,0)
+	text.BackgroundTransparency = 1
+	text.TextColor3 = Color3.new(1,1,1)
+	text.TextXAlignment = Enum.TextXAlignment.Left
+
+	text.RichText = true 
+
+	local function UpdateText()
+		local state = Values[valueKey]
+		local color = state and "#00FF00" or "#FF0000" 
+		text.Text = string.format('%s [<font color="%s">%s</font>]', label, color, tostring(state))
+	end
+
+	local btn = Instance.new("TextButton", frame)
+	btn.Size = UDim2.new(0.2,0,1,0)
+	btn.Position = UDim2.new(0.8,0,0,0)
+	btn.BackgroundTransparency = 1
+	btn.Text = ""
+	
+	local stork = Instance.new("UIStroke", btn)
+	stork.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stork.Color = Color3.new(1,1,1)
+	stork.Thickness = 2
+	stork.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	local stork2 = Instance.new("UIStroke", text)
+	stork2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stork2.Color = Color3.new(1,1,1)
+	stork2.Thickness = 2
+	stork2.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	local corner = Instance.new("UICorner", btn)
+	corner.CornerRadius = UDim.new(0,8)
+	local txtCorener = Instance.new("UICorner", text)
+	txtCorener.CornerRadius = UDim.new(0,8)
+	btn.MouseButton1Click:Connect(function()
+		Values[valueKey] = not Values[valueKey]
+		UpdateText() 
+	end)
+	UpdateText()
+
+	return frame
+end
+
+
+local function CreateEntryInTab(tab,label,defaultText,callback)
+	local frame = CreateFrame(tab,UDim2.new(1,0,0,30),nil,Color3.new(0,0,0),0.3)
+
+	-- Label
+	local text = Instance.new("TextLabel", frame)
+	text.Size = UDim2.new(0.6,0,1,0)
+	text.BackgroundTransparency = 1
+	text.TextColor3 = Color3.new(1,1,1)
+	text.TextXAlignment = Enum.TextXAlignment.Left
+	text.Text = label
+	
+	local stroke = Instance.new("UIStroke", text)
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	stroke.Color = Color3.new(1,1,1)
+	stroke.Thickness = 2
+
+	local corner = Instance.new("UICorner", text)
+	corner.CornerRadius = UDim.new(0,8)
+
+	-- TextBox
+	local box = Instance.new("TextBox", frame)
+	box.Size = UDim2.new(0.35,0,1,0)
+	box.Position = UDim2.new(0.62,0,0,0)
+	box.BackgroundTransparency = 0.2
+	box.BackgroundColor3 = Color3.new(0,0,0)
+	box.TextColor3 = Color3.new(1,1,1)
+	box.ClearTextOnFocus = false
+	box.Text = defaultText or ""
+
+	local stroke = Instance.new("UIStroke", box)
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	stroke.Color = Color3.new(1,1,1)
+	stroke.Thickness = 2
+
+	local corner = Instance.new("UICorner", box)
+	corner.CornerRadius = UDim.new(0,8)
+
+	box.FocusLost:Connect(function(enterPressed)
+		if enterPressed and callback then
+			callback(box.Text)
+		end
+	end)
+
+	return frame
+end
+
+local function CreateSliderInTab(tab, label, valueKey, minV, maxV)
+
+	local frame = CreateFrame(tab, UDim2.new(1,0,0,80), nil, Color3.new(0,0,0), 0.3)
+
+	--===== LABEL =====--
+	local title = Instance.new("TextLabel", frame)
+	title.Size = UDim2.new(1,0,0.35,0)
+	title.BackgroundTransparency = 1
+	title.TextColor3 = Color3.new(1,1,1)
+	title.Text = label
+	title.TextXAlignment = Enum.TextXAlignment.Left
+
+	local titleStroke = Instance.new("UIStroke", title)
+	titleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	titleStroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	titleStroke.Color = Color3.new(1,1,1)
+	titleStroke.Thickness = 2
+
+	local titleCorner = Instance.new("UICorner", title)
+	titleCorner.CornerRadius = UDim.new(0,8)
+
+
+	--===== BAR BACKGROUND =====--
+	local bar = Instance.new("Frame", frame)
+	bar.Size = UDim2.new(0.9,0,0.3,0)
+	bar.Position = UDim2.new(0.05,0,0.45,0)
+	bar.BackgroundColor3 = Color3.fromRGB(40,40,40)
+
+	local barCorner = Instance.new("UICorner", bar)
+	barCorner.CornerRadius = UDim.new(0,8)
+
+	local barStroke = Instance.new("UIStroke", bar)
+	barStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	barStroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+	barStroke.Color = Color3.new(1,1,1)
+	barStroke.Thickness = 2
+
+
+	--===== FILL =====--
+	local fill = Instance.new("Frame", bar)
+	fill.BackgroundColor3 = Color3.fromRGB(72, 78, 73)
+
+	local fillCorner = Instance.new("UICorner", fill)
+	fillCorner.CornerRadius = UDim.new(0,8)
+
+
+	--===== HANDLE =====--
+	local handle = Instance.new("Frame", bar)
+	handle.Size = UDim2.new(0,19,1,0)
+	handle.BackgroundColor3 = Color3.fromRGB(127, 126, 128)
+
+	local handleCorner = Instance.new("UICorner", handle)
+	handleCorner.CornerRadius = UDim.new(0,8)
+
+	local handleStroke = Instance.new("UIStroke", handle)
+	handleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	handleStroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	handleStroke.Color = Color3.new(0, 0, 0)
+	handleStroke.Thickness = 2
+
+
+	--===== VALUE LABEL =====--
+	local value = Instance.new("TextLabel", frame)
+	value.Size = UDim2.new(1,0,0.2,0)
+	value.Position = UDim2.new(0,0,0.8,0)
+	value.BackgroundTransparency = 1
+	value.TextColor3 = Color3.new(1,1,1)
+
+
+	--===== LOGIC =====--
+	local function Update(v)
+		v = math.clamp(v, minV, maxV)
+		Values[valueKey] = v
+
+		local p = (v - minV) / (maxV - minV)
+
+		fill.Size = UDim2.new(p,0,1,0)
+		handle.Position = UDim2.new(p, -5, 0, 0)
+
+		value.Text = tostring(math.floor(v))
+	end
+
+	Update(Values[valueKey] or minV)
+
+	local UIS = game:GetService("UserInputService")
+
+	bar.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+			local move, stop
+
+			move = UIS.InputChanged:Connect(function(i)
+				if i.UserInputType == Enum.UserInputType.MouseMovement then
+					local rel = (i.Position.X - bar.AbsolutePosition.X)/bar.AbsoluteSize.X
+					Update(minV + rel*(maxV-minV))
+				end
+			end)
+
+			stop = UIS.InputEnded:Connect(function(i)
+				if i.UserInputType == Enum.UserInputType.MouseButton1 then
+					move:Disconnect()
+					stop:Disconnect()
+				end
+			end)
+
+		end
+	end)
+end
+
+
+
+
+--========= SIMPLE BUTTON IN TAB =========--
+
+local function CreateActionButtonInTab(tab,label,callback)
+	local b = Instance.new("TextButton", tab)
+	b.Size = UDim2.new(1,0,0,30)
+	b.BackgroundTransparency = 0.3
+	b.BackgroundColor3 = Color3.new(0,0,0)
+	b.TextColor3 = Color3.new(1,1,1)
+	b.Text = label
+	b.MouseButton1Click:Connect(callback)
+	local stroke = Instance.new("UIStroke", b)
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+	stroke.Color = Color3.new(1,1,1)
+	stroke.Thickness = 2
+
+	local corner = Instance.new("UICorner", b)
+	corner.CornerRadius = UDim.new(0,8)
+	return b
+end
+
+
+
+--================= TABS =================--
+
+local AimTab   = CreateTab("Aim")
+local LocalTab = CreateTab("Local Player")
+local ESPTab   = CreateTab("ESP")
+local MiscTab  = CreateTab("Misc")
+
+-- open first tab by default
+AimTab.Visible = true
+
+
+
+--=========== AIM TAB OPTIONS ===========--
+
+CreateToggleInTab(AimTab,"Aimbot","Aimbot")
+CreateToggleInTab(AimTab,"Head Target","HeadTarget")
+CreateToggleInTab(AimTab, "Auto Rush","TweeningNearestPlayer")
+CreateSliderInTab(AimTab, "Tweening speed", "TweeningSpeed", 10, 300)
+
+--=========== ESP TAB ==========--
+CreateToggleInTab(ESPTab, "ESP players","ESP")
+CreateToggleInTab(ESPTab, "Players position beam", "PLRPOSBeam")
+CreateToggleInTab(ESPTab, "Box ESP", "BOXESP")
+
+
+
+--=========== LOCAL PLAYER TAB ===========--
+CreateToggleInTab(LocalTab,"Noclip","Noclip")
+
+CreateSliderInTab(LocalTab,"Walk Speed","WalkSpeed",0,300)
+
+task.delay(1, function()
+	Values.WalkSpeed = player.Character and player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed
+	game:GetService("RunService").Heartbeat:Connect(function()
+		local hum = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+		if hum then
+			hum.WalkSpeed = tonumber(Values.WalkSpeed) or 16
+		end
+	end)
+
+end)
+
+
+CreateActionButtonInTab(LocalTab,"Reset Player",function()
+	player.Character:BreakJoints()
+end)
+
