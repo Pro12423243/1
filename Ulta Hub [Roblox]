@@ -165,7 +165,7 @@ end)
 
 local Gui = Instance.new("ScreenGui", player.PlayerGui)
 Gui.ResetOnSpawn = false
-Gui.LayoutOrder = 1e+9
+Gui.DisplayOrder = 1e+9
 
 -- Create simple frame
 local function CreateFrame(parent, size, pos, color, transparency)
